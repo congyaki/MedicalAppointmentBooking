@@ -99,7 +99,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
                 var check = await _context.Users.Where(u => u.UserName == _user.UserName &&
                                                         u.Password == GetMD5(_user.Password))
                                                    .FirstOrDefaultAsync();
-                if (check.Id > 0)
+                if (check != null && check.Id > 0)
                 {
                     return Ok(check);
                 }
