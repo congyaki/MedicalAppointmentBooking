@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MedicalAppointmentBooking.WebAPI.EF;
-using MedicalAppointmentBooking.WebAPI.Models;
 using MedicalAppointmentBooking.WebAPI.ViewModels;
 using System.Security.Cryptography;
 using System.Text;
+using MedicalAppointmentBooking.WebAPI.Models.Entities;
+using MedicalAppointmentBooking.WebAPI.Models.EF;
 
 namespace MedicalAppointmentBooking.WebAPI.Controllers
 {

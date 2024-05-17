@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MedicalAppointmentBooking.WebAPI.EF;
-using MedicalAppointmentBooking.WebAPI.Entities;
+using MedicalAppointmentBooking.WebAPI.Models.Entities;
+using MedicalAppointmentBooking.WebAPI.Models.EF;
+using MedicalAppointmentBooking.WebAPI.ViewModels;
+using MedicalAppointmentBooking.WebAPI.Interfaces;
 
 namespace MedicalAppointmentBooking.WebAPI.Controllers
 {
@@ -15,21 +17,23 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
     public class DoctorsController : ControllerBase
     {
         private readonly MedicalAppointmentBookingDbContext _context;
+        private readonly IDoctorRepository _doctorRepo;
 
-        public DoctorsController(MedicalAppointmentBookingDbContext context)
+        public DoctorsController(MedicalAppointmentBookingDbContext context, IDoctorRepository doctorRepo)
         {
             _context = context;
+            _doctorRepo = doctorRepo;
         }
 
         // GET: api/Doctors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Doctor>>> GetDoctors()
+        public async Task<ActionResult<IEnumerable<DoctorVM>>> GetDoctors()
         {
           if (_context.Doctors == null)
           {
               return NotFound();
           }
-            return await _context.Doctors.ToListAsync();
+            return Ok (/*await _doctorRepo.GetAllDoctors()*/);
         }
 
         // GET: api/Doctors/5
@@ -84,16 +88,39 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
         // POST: api/Doctors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Doctor>> PostDoctor(Doctor doctor)
+        public async Task<ActionResult<Doctor>> PostDoctor(AddDoctorVM _doctor)
         {
           if (_context.Doctors == null)
           {
               return Problem("Entity set 'MedicalAppointmentBookingDbContext.Doctors'  is null.");
           }
-            _context.Doctors.Add(doctor);
+
+            var newDoctor = new Doctor()
+            {
+                UserId = _doctor.UserId,
+                Avatar = _doctor.Avatar,
+                Title = _doctor.Title,
+                Experience = _doctor.Experience,
+                /*DoctorSpecializations = new List<DoctorSpecialization>()*/
+            };
+            _context.Doctors.Add(newDoctor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDoctor", new { id = doctor.Id }, doctor);
+            if (_doctor.SpecializationIds != null)
+            {
+                foreach (var specializationId in _doctor.SpecializationIds)
+                {
+                    newDoctor.DoctorSpecializations.Add(new DoctorSpecialization
+                    {
+                        DoctorId = newDoctor.Id,
+                        SpecializationId = specializationId
+                    });
+
+                    await _context.SaveChangesAsync();
+
+                }
+            }
+            return Ok(newDoctor);
         }
 
         // DELETE: api/Doctors/5

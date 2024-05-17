@@ -1,8 +1,8 @@
-﻿using MedicalAppointmentBooking.WebAPI.Entities;
+﻿using MedicalAppointmentBooking.WebAPI.Models.Entities;
 using MedicalAppointmentBooking.WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MedicalAppointmentBooking.WebAPI.EF
+namespace MedicalAppointmentBooking.WebAPI.Models.EF
 {
     public class MedicalAppointmentBookingDbContext : DbContext
     {
@@ -22,15 +22,15 @@ namespace MedicalAppointmentBooking.WebAPI.EF
             {
                 entity.HasKey(e => e.Id);
 
-                entity.HasOne(e => e.User).WithMany(e => e.Doctors).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.User).WithOne(e => e.Doctor).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<DoctorSpecialization>(entity =>
             {
-                entity.HasKey(e => new { e.DoctorID, e.SpecializationID });
+                entity.HasKey(e => new { e.DoctorId, e.SpecializationId });
 
-                entity.HasOne(e => e.Doctor).WithMany(e => e.DoctorSpecializations).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(e => e.Specialization).WithMany(e => e.DoctorSpecializations).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Doctor).WithMany(e => e.DoctorSpecializations).OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.DoctorId);
+                entity.HasOne(e => e.Specialization).WithMany(e => e.DoctorSpecializations).OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.SpecializationId);
             });
 
         }

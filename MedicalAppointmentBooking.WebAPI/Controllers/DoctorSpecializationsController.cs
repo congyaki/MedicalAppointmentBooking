@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MedicalAppointmentBooking.WebAPI.EF;
-using MedicalAppointmentBooking.WebAPI.Entities;
+using MedicalAppointmentBooking.WebAPI.Models.Entities;
+using MedicalAppointmentBooking.WebAPI.Models.EF;
 
 namespace MedicalAppointmentBooking.WebAPI.Controllers
 {
@@ -55,7 +55,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDoctorSpecialization(int id, DoctorSpecialization doctorSpecialization)
         {
-            if (id != doctorSpecialization.DoctorID)
+            if (id != doctorSpecialization.DoctorId)
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (DoctorSpecializationExists(doctorSpecialization.DoctorID))
+                if (DoctorSpecializationExists(doctorSpecialization.DoctorId))
                 {
                     return Conflict();
                 }
@@ -107,7 +107,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetDoctorSpecialization", new { id = doctorSpecialization.DoctorID }, doctorSpecialization);
+            return CreatedAtAction("GetDoctorSpecialization", new { id = doctorSpecialization.DoctorId }, doctorSpecialization);
         }
 
         // DELETE: api/DoctorSpecializations/5
@@ -132,7 +132,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
 
         private bool DoctorSpecializationExists(int id)
         {
-            return (_context.DoctorSpecializations?.Any(e => e.DoctorID == id)).GetValueOrDefault();
+            return (_context.DoctorSpecializations?.Any(e => e.DoctorId == id)).GetValueOrDefault();
         }
     }
 }

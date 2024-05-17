@@ -4,6 +4,7 @@ using MedicalAppointmentBooking.WebAPI.Models.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalAppointmentBooking.WebAPI.Migrations
 {
     [DbContext(typeof(MedicalAppointmentBookingDbContext))]
-    partial class MedicalAppointmentBookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240323120429_UpdateTableName")]
+    partial class UpdateTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,7 @@ namespace MedicalAppointmentBooking.WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Doctors");
                 });
@@ -138,8 +139,8 @@ namespace MedicalAppointmentBooking.WebAPI.Migrations
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.Doctor", b =>
                 {
                     b.HasOne("MedicalAppointmentBooking.WebAPI.Models.Entities.User", "User")
-                        .WithOne("Doctor")
-                        .HasForeignKey("MedicalAppointmentBooking.WebAPI.Models.Entities.Doctor", "UserId")
+                        .WithMany("Doctors")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -177,8 +178,7 @@ namespace MedicalAppointmentBooking.WebAPI.Migrations
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.User", b =>
                 {
-                    b.Navigation("Doctor")
-                        .IsRequired();
+                    b.Navigation("Doctors");
                 });
 #pragma warning restore 612, 618
         }

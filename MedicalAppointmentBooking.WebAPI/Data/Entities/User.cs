@@ -1,6 +1,5 @@
-﻿using MedicalAppointmentBooking.WebAPI.Entities;
-
-namespace MedicalAppointmentBooking.WebAPI.Models
+﻿
+namespace MedicalAppointmentBooking.WebAPI.Models.Entities
 {
     public class User: BaseEntity
     {
@@ -14,7 +13,7 @@ namespace MedicalAppointmentBooking.WebAPI.Models
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
-        public List<Doctor> Doctors { get; set; }
+        public Doctor Doctor { get; set; } = new Doctor();
 
     }
 }
