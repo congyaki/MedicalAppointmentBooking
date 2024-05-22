@@ -8,7 +8,7 @@ namespace MedicalAppointmentBooking.WebAPI.ViewModels
         public int UserId { get; set; }
         public int Experience { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+/*        public string Description { get; set; }*/
         public string Avatar { get; set; }
         public List<Specialization> Specializations { get; set; }
 

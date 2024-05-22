@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MedicalAppointmentBooking.WebAPI.Interfaces;
+﻿using MedicalAppointmentBooking.WebAPI.Interfaces;
 using MedicalAppointmentBooking.WebAPI.Models.EF;
 using MedicalAppointmentBooking.WebAPI.Models.Entities;
 using MedicalAppointmentBooking.WebAPI.ViewModels;
