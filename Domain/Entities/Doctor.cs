@@ -9,7 +9,7 @@ namespace MedicalAppointmentBooking.WebAPI.Models.Entities
         public string Title { get; set; }
         public string Avatar { get; set; }
 
-        public User User { get; set; } = new User();
+        /*public User User { get; set; } = new User();*/
         public List<DoctorSpecialization> DoctorSpecializations { get; set; } = new List<DoctorSpecialization>();
     }
 }

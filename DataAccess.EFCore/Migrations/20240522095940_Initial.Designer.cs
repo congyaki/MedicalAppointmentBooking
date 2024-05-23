@@ -4,6 +4,7 @@ using MedicalAppointmentBooking.WebAPI.Models.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.EFCore.Migrations
 {
     [DbContext(typeof(MedicalAppointmentBookingDbContext))]
-    partial class MedicalAppointmentBookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522095940_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctors", (string)null);
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.DoctorSpecialization", b =>
@@ -61,7 +63,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasIndex("SpecializationId");
 
-                    b.ToTable("DoctorSpecializations", (string)null);
+                    b.ToTable("DoctorSpecializations");
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.Specialization", b =>
@@ -82,7 +84,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations", (string)null);
+                    b.ToTable("Specializations");
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.User", b =>
