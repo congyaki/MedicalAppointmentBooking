@@ -11,5 +11,6 @@ namespace Domain.Interfaces
     {
         Task<string> RegisterAsync(RegisterVM model);
         Task<AuthenticationVM> GetTokenAsync(TokenRequestVM model);
+        Task<string> AddRoleAsync(AddRoleVM model);
     }
 }

@@ -29,5 +29,12 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
             var result = await _userService.GetTokenAsync(model);
             return Ok(result);
         }
+
+        [HttpPost("addrole")]
+        public async Task<IActionResult> AddRoleAsync(AddRoleVM model)
+        {
+            var result = await _userService.AddRoleAsync(model);
+            return Ok(result);
+        }
     }
 }

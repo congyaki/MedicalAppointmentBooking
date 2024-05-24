@@ -46,8 +46,11 @@ namespace DataAccess.EFCore.Services
                 {
                     await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
 
+                    return $"User Registered with username {user.UserName}";
+
                 }
-                return $"User Registered with username {user.UserName}";
+                return $"Password weak";
+
             }
             else
             {
@@ -112,6 +115,27 @@ namespace DataAccess.EFCore.Services
                 expires: DateTime.UtcNow.AddMinutes(_jwt.DurationInMinutes),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
+        }
+
+        public async Task<string> AddRoleAsync(AddRoleVM model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return $"No Accounts Registered with {model.Email}.";
+            }
+            if (await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                var roleExists = Enum.GetNames(typeof(Authorization.Roles)).Any(x => x.ToLower() == model.Role.ToLower());
+                if (roleExists)
+                {
+                    var validRole = Enum.GetValues(typeof(Authorization.Roles)).Cast<Authorization.Roles>().Where(x => x.ToString().ToLower() == model.Role.ToLower()).FirstOrDefault();
+                    await _userManager.AddToRoleAsync(user, validRole.ToString());
+                    return $"Added {model.Role} to user {model.Email}.";
+                }
+                return $"Role {model.Role} not found.";
+            }
+            return $"Incorrect Credentials for user {user.Email}.";
         }
     }
 }
