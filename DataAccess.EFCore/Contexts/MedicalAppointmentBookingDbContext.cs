@@ -13,7 +13,7 @@ namespace MedicalAppointmentBooking.WebAPI.Models.EF
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Specialization> Specializations { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
-        public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<DoctorSpecialization> DoctorSpecializations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,11 +30,11 @@ namespace MedicalAppointmentBooking.WebAPI.Models.EF
                 entity.HasOne(e => e.User).WithOne(e => e.Doctor).HasForeignKey<Doctor>(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Patient>(entity =>
+            modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
-                entity.HasOne(e => e.User).WithOne(e => e.Patient).HasForeignKey<Patient>(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.User).WithOne(e => e.Customer).HasForeignKey<Customer>(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<DoctorSpecialization>(entity =>

@@ -10,7 +10,7 @@ namespace MedicalAppointmentBooking.WebAPI.Models.Entities
         public string LastName { get; set; }
 
         public Doctor Doctor { get; set; } = new Doctor();
-        public Patient Patient { get; set; }
+        public Customer Customer { get; set; }
 
     }
 }
