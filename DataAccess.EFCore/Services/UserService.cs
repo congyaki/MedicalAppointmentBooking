@@ -1,9 +1,12 @@
 ﻿using Domain.Constants;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Settings;
 using Domain.ViewModels;
+using MedicalAppointmentBooking.WebAPI.Models.EF;
 using MedicalAppointmentBooking.WebAPI.Models.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -21,12 +24,14 @@ namespace DataAccess.EFCore.Services
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
+        private readonly MedicalAppointmentBookingDbContext _context;
 
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, MedicalAppointmentBookingDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
+            _context = context;
         }
 
         public async Task<string> RegisterAsync(RegisterVM model)
@@ -45,6 +50,14 @@ namespace DataAccess.EFCore.Services
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+
+                    // Tạo đối tượng Customer và lưu vào cơ sở dữ liệu
+                    var customer = new Customer
+                    {
+                        UserId = user.Id,
+                    };
+                    _context.Customers.Add(customer);
+                    await _context.SaveChangesAsync();
 
                     return $"User Registered with username {user.UserName}";
 

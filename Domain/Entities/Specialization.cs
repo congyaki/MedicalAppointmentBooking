@@ -6,6 +6,6 @@ namespace MedicalAppointmentBooking.WebAPI.Models.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<DoctorSpecialization> DoctorSpecializations { get; set; } = new List<DoctorSpecialization>();
+        public List<DoctorSpecialization> DoctorSpecializations { get; set; }
     }
 }

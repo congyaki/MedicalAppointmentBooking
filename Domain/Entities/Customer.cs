@@ -13,5 +13,7 @@ namespace Domain.Entities
         public string UserId { get; set; }
 
         public User User { get; set; }
+
+        public List<PatientRecord> PatientRecords { get; set; }
     }
 }

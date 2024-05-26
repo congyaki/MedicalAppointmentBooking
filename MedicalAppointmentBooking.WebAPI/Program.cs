@@ -1,4 +1,5 @@
 using DataAccess.EFCore.Contexts;
+using DataAccess.EFCore.Repositories;
 using DataAccess.EFCore.Services;
 using Domain.Interfaces;
 using Domain.Settings;
@@ -71,6 +72,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IPatientRecordRepository, PatientRecordRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 
