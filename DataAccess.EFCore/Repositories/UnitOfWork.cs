@@ -13,6 +13,7 @@ namespace MedicalAppointmentBooking.WebAPI.Repositories
         public ICustomerRepository Customers { get; private set; }
 
         public IPatientRecordRepository PatientRecords { get; set; }
+        public IAppointmentRepository Appointments { get; set; }
 
         public UnitOfWork(MedicalAppointmentBookingDbContext context)
         {
@@ -21,6 +22,7 @@ namespace MedicalAppointmentBooking.WebAPI.Repositories
             Doctors = new DoctorRepository(_context);
             Customers = new CustomerRepository(_context);
             PatientRecords = new PatientRecordRepository(_context);
+            Appointments = new AppointmentRepository(_context);
         }
 
         public int Complete()

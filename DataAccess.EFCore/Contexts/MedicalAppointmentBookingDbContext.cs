@@ -3,6 +3,7 @@ using MedicalAppointmentBooking.WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Domain.Entities;
+using DataAccess.EFCore.Converter;
 
 namespace MedicalAppointmentBooking.WebAPI.Models.EF
 {
@@ -16,6 +17,7 @@ namespace MedicalAppointmentBooking.WebAPI.Models.EF
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<PatientRecord> PatientRecords { get; set; }
         public virtual DbSet<DoctorSpecialization> DoctorSpecializations { get; set; }
+        public virtual DbSet<Appointment> Appointments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -51,6 +53,21 @@ namespace MedicalAppointmentBooking.WebAPI.Models.EF
                 entity.HasKey(e => e.Id);
 
                 entity.HasOne(e => e.Customer).WithMany(e => e.PatientRecords).OnDelete(DeleteBehavior.Cascade).HasForeignKey(e => e.CustomerId);
+            });
+
+            modelBuilder.Entity<Appointment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasOne(e => e.Doctor).WithMany(e => e.Appointments).HasForeignKey(e => e.DoctorId).OnDelete(DeleteBehavior.Restrict); ;
+                entity.HasOne(e => e.PatientRecord).WithMany(e => e.Appointments).HasForeignKey(e => e.PatientRecordId).OnDelete(DeleteBehavior.Restrict); ;
+                entity.Property(e => e.Date)
+                .HasConversion<DateOnlyConverter>()
+                .HasColumnType("date");
+
+                entity.Property(e => e.Time)
+                    .HasConversion<TimeOnlyConverter>()
+                    .HasColumnType("time");
             });
 
         }

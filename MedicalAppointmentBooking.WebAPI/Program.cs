@@ -74,6 +74,7 @@ builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>(
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IPatientRecordRepository, PatientRecordRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 

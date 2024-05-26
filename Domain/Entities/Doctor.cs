@@ -1,4 +1,5 @@
-﻿using MedicalAppointmentBooking.WebAPI.Models;
+﻿using Domain.Entities;
+using MedicalAppointmentBooking.WebAPI.Models;
 
 namespace MedicalAppointmentBooking.WebAPI.Models.Entities
 {
@@ -13,5 +14,6 @@ namespace MedicalAppointmentBooking.WebAPI.Models.Entities
         public DateTime DateOfBirth { get; set; }
         public User User { get; set; }
         public List<DoctorSpecialization> DoctorSpecializations { get; set; }
+        public List<Appointment> Appointments { get; set; }
     }
 }

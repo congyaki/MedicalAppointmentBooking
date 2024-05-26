@@ -19,5 +19,6 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         public Customer Customer { get; set; }
+        public List<Appointment> Appointments { get; set; }
     }
 }
