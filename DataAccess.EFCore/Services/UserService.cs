@@ -25,13 +25,14 @@ namespace DataAccess.EFCore.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
         private readonly MedicalAppointmentBookingDbContext _context;
-
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, MedicalAppointmentBookingDbContext context)
+        private readonly IUserAccessor _userAccessor;
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, MedicalAppointmentBookingDbContext context, IUserAccessor userAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
             _context = context;
+            _userAccessor = userAccessor;
         }
 
         public async Task<string> RegisterAsync(RegisterVM model)
@@ -149,6 +150,11 @@ namespace DataAccess.EFCore.Services
                 return $"Role {model.Role} not found.";
             }
             return $"Incorrect Credentials for user {user.Email}.";
+        }
+
+        public async Task<string> GetUserId()
+        {
+            return _userAccessor.GetCurrentUserId();
         }
     }
 }

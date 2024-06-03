@@ -12,8 +12,8 @@ namespace MedicalAppointmentBooking.WebAPI.Repositories
         public IDoctorRepository Doctors { get; private set; }
         public ICustomerRepository Customers { get; private set; }
 
-        public IPatientRecordRepository PatientRecords { get; set; }
-        public IAppointmentRepository Appointments { get; set; }
+        public IPatientRecordRepository PatientRecords { get; private set; }
+        public IAppointmentRepository Appointments { get; private set; }
 
         public UnitOfWork(MedicalAppointmentBookingDbContext context)
         {

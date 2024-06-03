@@ -5,7 +5,6 @@ using MedicalAppointmentBooking.WebAPI.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web.Http.ModelBinding;
 
 namespace MedicalAppointmentBooking.WebAPI.Repositories
 {

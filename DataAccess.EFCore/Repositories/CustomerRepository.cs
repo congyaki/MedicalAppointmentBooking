@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using MedicalAppointmentBooking.WebAPI.Models.EF;
 using MedicalAppointmentBooking.WebAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,18 @@ namespace DataAccess.EFCore.Repositories
         public CustomerRepository(MedicalAppointmentBookingDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<int> GetByUserId(string userId)
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
+            var customerId = customer.Id;
+            if (customer == null)
+            {
+                return 0;
+            }
+            return customerId;
+
         }
     }
 }

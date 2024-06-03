@@ -10,6 +10,6 @@ namespace Domain.Interfaces
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
-
+        Task<int> GetByUserId(string userId);
     }
 }

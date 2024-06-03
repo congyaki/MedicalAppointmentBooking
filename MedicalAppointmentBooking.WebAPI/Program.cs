@@ -1,4 +1,6 @@
+using DataAccess.EFCore.Common;
 using DataAccess.EFCore.Contexts;
+using DataAccess.EFCore.Converter;
 using DataAccess.EFCore.Repositories;
 using DataAccess.EFCore.Services;
 using Domain.Interfaces;
@@ -52,7 +54,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+    options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+}); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -69,7 +75,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
 //Life cycle DI: AddSingleton(), AddTransient(), AddScoped()
-
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -90,6 +96,7 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         await ApplicationDbContextSeed.SeedEssentialsAsync(userManager, roleManager);
+        ApplicationDbContextSeed.Initialize(services);
     }
     catch (Exception ex)
     {
@@ -97,6 +104,7 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred seeding the DB.");
     }
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
