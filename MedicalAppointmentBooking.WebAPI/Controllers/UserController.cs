@@ -15,6 +15,13 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
             _userService = userService;
         }
 
+        [HttpPost("token")]
+        public async Task<IActionResult> GetTokenAsync(TokenRequestVM model)
+        {
+            var result = await _userService.GetTokenAsync(model);
+            return Ok(result);
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterVM model)
         {
@@ -23,12 +30,7 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("token")]
-        public async Task<IActionResult> GetTokenAsync(TokenRequestVM model)
-        {
-            var result = await _userService.GetTokenAsync(model);
-            return Ok(result);
-        }
+        
 
         [HttpPost("addrole")]
         public async Task<IActionResult> AddRoleAsync(AddRoleVM model)

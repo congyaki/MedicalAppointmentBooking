@@ -70,6 +70,9 @@ namespace MedicalAppointmentBooking.WebAPI.Models.EF
                     .HasColumnType("time");
             });
 
+            
+
+
         }
     }
 }

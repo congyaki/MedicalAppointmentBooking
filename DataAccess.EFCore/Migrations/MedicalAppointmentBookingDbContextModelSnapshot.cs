@@ -48,7 +48,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasIndex("PatientRecordId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
@@ -68,7 +68,7 @@ namespace DataAccess.EFCore.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PatientRecord", b =>
@@ -113,7 +113,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("PatientRecords");
+                    b.ToTable("PatientRecords", (string)null);
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.Doctor", b =>
@@ -155,7 +155,7 @@ namespace DataAccess.EFCore.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.DoctorSpecialization", b =>
@@ -170,7 +170,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasIndex("SpecializationId");
 
-                    b.ToTable("DoctorSpecializations");
+                    b.ToTable("DoctorSpecializations", (string)null);
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.Specialization", b =>
@@ -191,7 +191,7 @@ namespace DataAccess.EFCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations");
+                    b.ToTable("Specializations", (string)null);
                 });
 
             modelBuilder.Entity("MedicalAppointmentBooking.WebAPI.Models.Entities.User", b =>

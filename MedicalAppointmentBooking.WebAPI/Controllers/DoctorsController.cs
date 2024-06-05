@@ -10,6 +10,7 @@ using MedicalAppointmentBooking.WebAPI.Models.EF;
 using MedicalAppointmentBooking.WebAPI.ViewModels;
 using MedicalAppointmentBooking.WebAPI.Interfaces;
 using AutoMapper;
+using Domain.ViewModels;
 
 namespace MedicalAppointmentBooking.WebAPI.Controllers
 {
@@ -33,7 +34,12 @@ namespace MedicalAppointmentBooking.WebAPI.Controllers
             var respond = _UnitOfWork.Doctors.GetAll();
             return Ok (respond);
         }
-
+        [HttpGet("GetDoctorsBySpecizalizationId/{specializationId}")]
+        public async Task<ActionResult<List<DoctorBasicVM>>> GetDoctorsBySpecizalizationId(int specializationId)
+        {
+            var doctorsBasicVM = await _UnitOfWork.Specializations.GetDoctorInSpecialization(specializationId);
+            return Ok(doctorsBasicVM);
+        }
         // GET: api/Doctors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Doctor>> GetDoctor(int id)

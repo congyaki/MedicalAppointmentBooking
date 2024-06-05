@@ -38,65 +38,163 @@ namespace DataAccess.EFCore.Contexts
             using (var context = new MedicalAppointmentBookingDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<MedicalAppointmentBookingDbContext>>()))
             {
-                // Look for any existing patient records.
-                if (!context.PatientRecords.Any())
+                
+
+                // Check for existing Users
+                int existingUsersCount = context.Users.Count();
+
+                // Add Users if less than 10 exist
+                if (existingUsersCount < 20)
                 {
-                    context.PatientRecords.AddRange(
-                        new PatientRecord(
-                            customerId: 2,
-                            firstName: "John",
-                            lastName: "Doe",
-                            dateOfBirth: new DateTime(1980, 5, 20),
-                            gender: "Male",
-                            address: "123 Main St, Springfield",
-                            phoneNumber: "123-456-7890",
-                            email: "john.doe@example.com"
-                        ),
-                        new PatientRecord(
-                            customerId: 2,
-                            firstName: "Jane",
-                            lastName: "Smith",
-                            dateOfBirth: new DateTime(1992, 7, 15),
-                            gender: "Female",
-                            address: "456 Elm St, Springfield",
-                            phoneNumber: "987-654-3210",
-                            email: "jane.smith@example.com"
-                        )
-                    );
-
-                    context.SaveChanges();
-                }
-
-                if (!context.Doctors.Any())
-                {
-                    context.Doctors.AddRange(
-                        new Doctor
-                        {
-                            UserId = "2aa56dcb-8ebe-4b0e-87b0-d8e9ea569414",
-                            Experience = 10,
-                            Title = "Dr.",
-                            Avatar = "avatar1.png",
-                            PhoneNumber = "111-222-3333",
-                            Address = "789 Maple St, Springfield",
-                            DateOfBirth = new DateTime(1975, 3, 10)
-                        }
-                    );
-
-                    context.SaveChanges();
-                }
-
-                if (!context.Appointments.Any())
-                {
-                    context.Appointments.Add(new Appointment
+                    for (int i = existingUsersCount + 1; i <= 10; i++)
                     {
-                        PatientRecordId = 3,
-                        DoctorId = 3,
-                        Date = DateOnly.FromDateTime(DateTime.Now), // Ngày hiện tại
-                        Time = TimeOnly.FromDateTime(DateTime.Now)  // Giờ hiện tại
-                    });
+                        var user = new User
+                        {
+                            UserName = $"user{i}",
+                            Email = $"user{i}@example.com",
+                            FirstName = $"John{i}",
+                            LastName = $"Cena{i}",
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true
+                        };
+
+                        // Set the default password
+                        var passwordHasher = new PasswordHasher<User>();
+                        user.PasswordHash = passwordHasher.HashPassword(user, "Pa$$w0rd.");
+                        context.Users.Add(user);
+                    }
+                    context.SaveChanges();
+
+                }
+
+                var maxCustomerId = context.Customers.Max(pr => pr.Id);
+
+                // Check for existing Customers
+                /*if (maxCustomerId <= 10)
+                {
+                    var existingUsers = context.Users.ToList(); // Get existing Users
+                    for (int i = maxCustomerId + 1; i < 10; i++)
+                    {
+                        var randomUserId = existingUsers[new Random().Next(4, existingUsers.Count)].Id;
+                        context.Customers.Add(new Customer
+                        {
+                            UserId = randomUserId
+                        });
+                    }
+                    context.SaveChanges();
+                }*/
+
+
+                var maxPatientRecordId = context.PatientRecords.Max(pr => pr.Id);
+                // Check for existing PatientRecords
+                if (maxPatientRecordId < 8)
+                {
+                    for (int i = maxPatientRecordId + 1; i < 7; i++)
+                    {
+                        context.PatientRecords.Add(new PatientRecord
+                        {
+                            CustomerId = new Random().Next(3, maxCustomerId), // Random customer ID
+
+                            FirstName = $"Patient {i + 1} FirstName",
+                            LastName = $"Patient {i + 1} LastName",
+                            DateOfBirth = DateTime.Now.AddYears(-(20 + i)), // Random DoB within range
+                            Gender = (i % 2 == 0) ? "Male" : "Female", // Alternate genders
+                            Address = $"123 Main St {i}, Springfield",
+                            PhoneNumber = $"123-456-{i}{i}{i}{i}",
+                            Email = $"patient{i}@example.com"
+                        });
+                    }
+                    context.SaveChanges();
+                }
+
+
+                var maxAppointmentId = context.Appointments.Max(a => a.Id);
+
+                if (maxAppointmentId <= 10)
+                {
+                    for(int i = maxAppointmentId + 1;i < 10; i++)
+                    {
+                        context.Appointments.Add(new Appointment
+                        {
+                            PatientRecordId = 3,
+                            DoctorId = 3,
+                            Date = DateOnly.FromDateTime(DateTime.Now), // Ngày hiện tại
+                            Time = TimeOnly.FromDateTime(DateTime.Now)  // Giờ hiện tại
+                        });
+                    }
 
                     context.SaveChanges();
                 }
+
+                // Check for existing Doctors
+                int maxDoctorId = context.Doctors.Max(e => e.Id);
+
+                // Add Doctors if less than 10 exist
+                if (maxDoctorId < 10)
+                {
+                    var existingUsers = context.Users.ToList(); // Get existing Users
+
+                    for (int i = maxDoctorId + 1; i <= 10; i++)
+                    {
+                        // Randomly select an existing User ID
+                        var randomUserId = existingUsers[new Random().Next(0, existingUsers.Count)].Id;
+
+                        context.Doctors.Add(new Doctor
+                        {
+                            UserId = randomUserId, // Link to existing User ID
+                            Experience = 5,
+                            Title = "Dr.",
+                            Avatar = $"avatar{i}.png",
+                            PhoneNumber = $"999-888-{i}{i}{i}{i}",
+                            Address = $"1 Main St, City {i}",
+                            DateOfBirth = DateTime.Now.AddYears(-(30 + i))
+                        });
+                    }
+                    context.SaveChanges();
+                }// Check for existing Doctors
+
+
+                int maxSpecializationId = context.Specializations.Max(s => s.Id);
+
+                // Add Specialization if less than 10 exist
+                if (maxSpecializationId < 10)
+                {
+
+                    for (int i = maxSpecializationId + 1; i <= 10; i++)
+                    {
+                        context.Specializations.Add(new Specialization
+                        {
+                            Name = $"Specialization {i}",
+                            Description = $"Description {i}",
+                        });
+                    }
+                    context.SaveChanges();
+                }
+
+                var doctorsWithSpecializations = context.Doctors
+                      .Include(d => d.DoctorSpecializations) // Eagerly load DoctorSpecializations
+                      .Where(d => !d.DoctorSpecializations.Any()) // Filter doctors without specializations
+                      .ToList();
+
+                var specializations = context.Specializations.ToList(); // Get all specializations
+
+                foreach (var doctor in doctorsWithSpecializations)
+                {
+                    // Assign 1-2 random specializations to each doctor
+                    for (int i = 0; i < new Random().Next(1, 3); i++)
+                    {
+                        var randomSpecialization = specializations[new Random().Next(0, specializations.Count)];
+                        doctor.DoctorSpecializations.Add(new DoctorSpecialization
+                        {
+                            DoctorId = doctor.Id,
+                            SpecializationId = randomSpecialization.Id
+                        });
+                    }
+                }
+
+                context.SaveChanges();
+
+                
             }
         }
     }

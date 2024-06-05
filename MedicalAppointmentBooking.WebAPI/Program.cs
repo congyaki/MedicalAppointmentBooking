@@ -17,7 +17,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 // Add services to the container.
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
@@ -105,17 +113,23 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    // Disable HTTPS redirection in development for testing purposes
 }
-
+else
+{
+    app.UseHttpsRedirection();
+}
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("AllowAll");
+
 
 app.UseAuthentication();
 

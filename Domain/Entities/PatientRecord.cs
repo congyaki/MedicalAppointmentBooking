@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
     public class PatientRecord : BaseEntity
     {
-        public PatientRecord(int customerId, string firstName, string lastName, DateTime dateOfBirth, string gender, string address, string phoneNumber, string email)
+        /*public PatientRecord(int customerId, string firstName, string lastName, DateTime dateOfBirth, string gender, string address, string phoneNumber, string email)
         {
             CustomerId = customerId;
             FirstName = firstName;
@@ -19,7 +19,7 @@ namespace Domain.Entities
             Address = address;
             PhoneNumber = phoneNumber;
             Email = email;
-        }
+        }*/
 
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
