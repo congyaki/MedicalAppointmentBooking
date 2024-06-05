@@ -67,13 +67,13 @@ namespace DataAccess.EFCore.Contexts
 
                 }
 
-                var maxCustomerId = context.Customers.Max(pr => pr.Id);
+                var maxCustomerId = context.Customers.Any();
 
                 // Check for existing Customers
-                /*if (maxCustomerId <= 10)
+                if (!maxCustomerId)
                 {
                     var existingUsers = context.Users.ToList(); // Get existing Users
-                    for (int i = maxCustomerId + 1; i < 10; i++)
+                    for (int i = 1; i < 10; i++)
                     {
                         var randomUserId = existingUsers[new Random().Next(4, existingUsers.Count)].Id;
                         context.Customers.Add(new Customer
@@ -82,18 +82,20 @@ namespace DataAccess.EFCore.Contexts
                         });
                     }
                     context.SaveChanges();
-                }*/
+                }
+
+                var maxCustomerIds = context.Customers.Max(c => c.Id);
 
 
-                var maxPatientRecordId = context.PatientRecords.Max(pr => pr.Id);
+                var maxPatientRecordId = context.PatientRecords.Any();
                 // Check for existing PatientRecords
-                if (maxPatientRecordId < 8)
+                if (!maxPatientRecordId)
                 {
-                    for (int i = maxPatientRecordId + 1; i < 7; i++)
+                    for (int i = 1; i < 7; i++)
                     {
                         context.PatientRecords.Add(new PatientRecord
                         {
-                            CustomerId = new Random().Next(3, maxCustomerId), // Random customer ID
+                            CustomerId = new Random().Next(1, maxCustomerIds), // Random customer ID
 
                             FirstName = $"Patient {i + 1} FirstName",
                             LastName = $"Patient {i + 1} LastName",
@@ -108,11 +110,11 @@ namespace DataAccess.EFCore.Contexts
                 }
 
 
-                var maxAppointmentId = context.Appointments.Max(a => a.Id);
+                var maxAppointmentId = context.Appointments.Any();
 
-                if (maxAppointmentId <= 10)
+                if (!maxAppointmentId)
                 {
-                    for(int i = maxAppointmentId + 1;i < 10; i++)
+                    for(int i = 1;i < 10; i++)
                     {
                         context.Appointments.Add(new Appointment
                         {
@@ -127,14 +129,14 @@ namespace DataAccess.EFCore.Contexts
                 }
 
                 // Check for existing Doctors
-                int maxDoctorId = context.Doctors.Max(e => e.Id);
+                var maxDoctorId = context.Doctors.Any();
 
                 // Add Doctors if less than 10 exist
-                if (maxDoctorId < 10)
+                if (!maxDoctorId)
                 {
                     var existingUsers = context.Users.ToList(); // Get existing Users
 
-                    for (int i = maxDoctorId + 1; i <= 10; i++)
+                    for (int i = 1; i <= 10; i++)
                     {
                         // Randomly select an existing User ID
                         var randomUserId = existingUsers[new Random().Next(0, existingUsers.Count)].Id;
@@ -154,13 +156,13 @@ namespace DataAccess.EFCore.Contexts
                 }// Check for existing Doctors
 
 
-                int maxSpecializationId = context.Specializations.Max(s => s.Id);
+                var maxSpecializationId = context.Specializations.Any();
 
                 // Add Specialization if less than 10 exist
-                if (maxSpecializationId < 10)
+                if (!maxSpecializationId)
                 {
 
-                    for (int i = maxSpecializationId + 1; i <= 10; i++)
+                    for (int i = 1; i <= 10; i++)
                     {
                         context.Specializations.Add(new Specialization
                         {
